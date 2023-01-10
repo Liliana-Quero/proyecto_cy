@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-    <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -11,8 +12,9 @@
 
 
 
-    <link href="{!! url('assets/css/app.css') !!}" rel="stylesheet">
+    <link href="{!! url('css/app.css') !!}" rel="stylesheet">
 </head>
+
 <body>
 
     @include('layouts.partials.nav')
@@ -22,5 +24,7 @@
 
     <script src="{!! url('assets/js/bootstrap.bundle.min.js') !!}"></script>
 
-  </body>
+    @stack('scripts')
+</body>
+
 </html>

@@ -4,32 +4,70 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Registro;
+use App\Models\Sucursal;
+use App\Models\Topico;
+use App\Models\Trimestre;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use App\Models\Registros;
-use PDF;
+use Illuminate\Support\Facades\Session;
 
 class RevisionAdminController extends Controller
 {
-    public function revisionadmin(Request $request)
+    public function dashboard(Request $request)
     {
-        if ($request)
-        {
+        $sucursal = $request->sucursal;
+        $trimestre = $request->trimestre;
+        $topico = $request->topico;
 
-            $query=trim($request->get('searchText'));
-            $registros=DB::table('registros')
-           ->where('nombre_socio','LIKE','%'.$query.'%')
-            ->orwhere('num_socio','LIKE','%'.$query.'%')
-            ->orwhere('fecha_colocacion','LIKE','%'.$query.'%')
-            ->orwhere('ref_credito','LIKE','%'.$query.'%')
-            ->orderBy('id','asc')
-            ->paginate(100000);
-            return view('revisionadmin',["registros"=>$registros,"searchText"=>$query]);
-        }
+
+        $sucursal_id = Sucursal::where('nombre', $sucursal)->first()->id;
+        $topico_id = Topico::where('nombre', $topico)->first()->id;
+
+        $promedio_riesgo = Registro::select(DB::raw('AVG(nivel_riesgo) AS avg'), 'trimestre_id')
+            ->where('sucursal_id', $sucursal_id)
+            ->where('topico_id', $topico_id)
+            ->groupBy('trimestre_id')
+            ->pluck('avg', 'trimestre_id');
+
+        $total_cumplimiento = Registro::select(DB::raw('COUNT(*) as count'), 'trimestre_id')
+            ->where('sucursal_id', $sucursal_id)
+            ->where('topico_id', $topico_id)
+            ->where('cumplimiento', 'SI')
+            ->groupBy('trimestre_id')
+            ->pluck('count', 'trimestre_id');
+
+        $cumplimiento_general = Registro::select(DB::raw('COUNT(*) as count'), 'trimestre_id')
+            ->where('cumplimiento', 'SI')
+            ->groupBy('trimestre_id')
+            ->pluck('count', 'trimestre_id');
+
+        $total_por_trim = Registro::select(DB::raw('COUNT(*) as count'), 'trimestre_id')
+            ->groupBy('trimestre_id')
+            ->pluck('count', 'trimestre_id');
+
+        return view(
+            'dashboardadmin',
+            compact(
+                'sucursal',
+                'trimestre',
+                'topico',
+                'promedio_riesgo',
+                'total_cumplimiento',
+                'cumplimiento_general',
+                'total_por_trim'
+            )
+        );
     }
-    public function generar_pdf()
+
+    public function generar_pdf(Request $request)
     {
-        $registros = Registros::all();
-        $pdf = PDF::loadView('pdf.pdf_cuestionario', compact('registros'))->setPaper('a4', 'landscape');
+        $registros = json_decode($request->registros);
+        $sucursal = $request->sucursal;
+        $trimestre = $request->trimestre;
+        $topico = $request->topico;
+
+        $pdf = Pdf::loadView('pdf.pdf_cuestionario', compact('registros', 'sucursal', 'trimestre', 'topico'))->setPaper('a4', 'landscape');
 
         return $pdf->stream('registros.pdf');
     }
