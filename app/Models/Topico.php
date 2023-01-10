@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Topico extends Model
 {
-    protected $table='topico';
-    protected $primarykey='id';
+    protected $table = 'topicos';
+    protected $primarykey = 'id';
 
     protected $fillable = [
         'id',
@@ -16,10 +16,9 @@ class Topico extends Model
     ];
 
 
-public function TopicosSucursalesTrimestres()
-{
-    return $this->belongsToMany(Sucursal::class);
-    return $this->belongsToMany(Trimestre::class);
-
-}
+    public function TopicosSucursalesTrimestres()
+    {
+        return $this->belongsToMany(Sucursal::class);
+        return $this->belongsToMany(Trimestre::class);
+    }
 }

@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Registros extends Model
+class Registro extends Model
 {
-    protected $table='registros';
-    protected $primarykey='id';
+    protected $table = 'registros';
+    protected $primarykey = 'id';
 
     protected $fillable = [
         'id',
-        'id_suc_trim_top',
+        'sucursal_id',
+        'trimestre_id',
+        'topico_id',
         'nombre_socio',
         'num_socio',
         'ref_credito',
@@ -26,22 +27,9 @@ class Registros extends Model
         'poliza',
         'seguro',
         'observaciones',
-
         'cumplimiento',
         'nivel_riesgo',
         'estatus',
         'puntaje_nivel_riesgo'
-
-
     ];
-    public function registros(){
-        return $this->belongsTo('App\Registros');
-    }
-
-public function sucursalesTopicosTrimestres()
-{
-    return $this->belongsToMany(Trimestre::class);
-    return $this->belongsToMany(Topico::class);
-
-}
 }

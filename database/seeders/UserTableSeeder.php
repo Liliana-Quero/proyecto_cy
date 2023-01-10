@@ -1,31 +1,26 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
-
-
-class DatosPersonalesSeeder extends Seeder
+class UserTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
-        //guardar un solo registro
-        DB::table('users')->insert([
-          'name' => 'Administrador Yolomecatl',
-          'email' => 'admin@yolomecatl.com',
-          'role' => 'admin',
-          'username'=> 'Administrador',
-          'password' => bcrypt('admin12345'),
-        ]);
-
-        
-
-         
-    }
+  /**
+   * Run the database seeds.
+   *
+   * @return void
+   */
+  public function run()
+  {
+    //guardar un solo registro
+    DB::table('users')->insert([
+      'name' => 'Liliana Quero',
+      'email' => 'lquero@yolomecatl.com',
+      'role' => 'admin',
+      'username' => 'LilianaQ',
+      'password' => bcrypt('admin12345'),
+    ]);
+  }
 }
