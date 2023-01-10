@@ -62,10 +62,9 @@
                         <form id="registros-form" action="/cuestionarioadmin" method="POST">
                             @csrf
                             @method('PUT')
-                            <input type="hidden" name="sucursal" value="{{$sucursal->nombre}}">
-                            <input type="hidden" name="trimestre"
-                                value="{{$trimestre->fecha_inicial}} a {{$trimestre->fecha_final}}">
-                            <input type="hidden" name="topico" value="{{$topico->nombre}}">
+                            <input type="hidden" name="sucursal" value="{{$sucursal->id}}">
+                            <input type="hidden" name="trimestre" value="{{$trimestre->id}}">
+                            <input type="hidden" name="topico" value="{{$topico->id}}">
                             @foreach ($registros as $registro)
                             <tr style="  text-align: -webkit-center; font-size: 15px;">
                                 <td>{{$registro->id}} <input type="hidden" name="id[]" value="{{$registro->id}}"></td>

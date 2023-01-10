@@ -60,9 +60,9 @@
     <div>
         <br><br>
         <h1>Listado:</h1>
-        <h6>Sucursal: {{$sucursal}}</h6>
-        <h6>Trimestre: {{$trimestre}}</h6>
-        <h6>Tópico: {{$topico}}</h6>
+        <h6>Sucursal: {{$sucursal->nombre}}</h6>
+        <h6>Trimestre: {{$trimestre->fecha_inicial}} a {{$trimestre->fecha_final}}</h6>
+        <h6>Tópico: {{$topico->nombre}}</h6>
     </div>
     <div style="font-size: 10px;  overflow-y: hidden  ">
 
