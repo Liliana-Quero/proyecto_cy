@@ -8,21 +8,14 @@ use App\Models\Registro;
 use App\Models\Sucursal;
 use App\Models\Topico;
 use App\Models\Trimestre;
-use Illuminate\Support\Facades\Session;
 
 class CuestionarioAdminController extends Controller
 {
-
-    public function cuestionario()
-    {
-        return view('cuestionarioadmin');
-    }
-
     public function filtrar_registros(Request $request)
     {
-        $sucursal = Sucursal::find($request->select1);
-        $trimestre = Trimestre::find($request->select2);
-        $topico = Topico::find($request->select3);
+        $sucursal = Sucursal::find($request->suc);
+        $trimestre = Trimestre::find($request->trim);
+        $topico = Topico::find($request->top);
 
         $registros = Registro::where('sucursal_id', $sucursal->id)
             ->where('trimestre_id', $trimestre->id)
@@ -34,12 +27,14 @@ class CuestionarioAdminController extends Controller
         }
 
         if ($revisar)
-            return redirect('/revisar-registros')->with([
-                "registros" => $registros,
-                "sucursal" => $sucursal->nombre,
-                "trimestre" => $trimestre->fecha_inicial . ' a ' . $trimestre->fecha_final,
-                "topico" => $topico->nombre
-            ]);
+            return redirect()->route(
+                'registros.revisar',
+                [
+                    "suc" => $sucursal->id,
+                    "trim" => $trimestre->id,
+                    "top" => $topico->id
+                ]
+            );
 
         return view('cuestionarioadmin', [
             "registros" => $registros,
@@ -81,31 +76,46 @@ class CuestionarioAdminController extends Controller
             $registros[] = $registro;
         }
 
-        return redirect('/revisar-registros')->with([
-            "registros" => $registros,
-            "sucursal" => $inputs["sucursal"],
-            "trimestre" => $inputs["trimestre"],
-            "topico" => $inputs["topico"]
-        ]);
+        return redirect()->route(
+            'registros.revisar',
+            [
+                "suc" => $inputs["sucursal"],
+                "trim" => $inputs["trimestre"],
+                "top" => $inputs["topico"]
+            ]
+        );
     }
 
-    public function revisar_registros()
+    public function revisar_registros(Request $request)
     {
-        $sucursal = Session::get('sucursal');
-        $trimestre = Session::get('trimestre');
-        $topico = Session::get('topico');
-        $registros = Session::get('registros');
+        $sucursal = Sucursal::find($request->suc);
+        $trimestre = Trimestre::find($request->trim);
+        $topico = Topico::find($request->top);
+        $buscar = $request->buscar;
 
-        if (!$registros) return redirect('/admin');
+        $query = Registro::where('sucursal_id', $sucursal->id)
+            ->where('trimestre_id', $trimestre->id)
+            ->where('topico_id', $topico->id);
+
+        if ($buscar) {
+            $query->where(function ($query) use ($buscar) {
+                $query->where('nombre_socio', 'ILIKE', '%' . $buscar . '%')
+                    ->orwhere('num_socio', 'LIKE', '%' . $buscar . '%')
+                    ->orwhere('fecha_colocacion', 'LIKE', '%' . $buscar . '%')
+                    ->orwhere('ref_credito', 'LIKE', '%' . $buscar . '%');
+            });
+        }
+
+        $registros = $query->orderBy('id', 'asc')->get();
 
         return view('revisionadmin', [
             "registros" => $registros,
             "sucursal" => $sucursal,
             "trimestre" => $trimestre,
-            "topico" => $topico
+            "topico" => $topico,
+            "buscar" => $buscar
         ]);
     }
-
 
     /*  public function registro(Request $request){
 

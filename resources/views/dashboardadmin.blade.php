@@ -11,8 +11,8 @@
         <h1 class="text-center">Dashboard</h1>
         <div class="row">
             <h3 class="mt-4 text-center">Comparación entre los trimestres</h3>
-            <h6>Sucursal: {{$sucursal}}</h6>
-            <h6>Tópico: {{$topico}}</h6>
+            <h6>Sucursal: {{$sucursal->nombre}}</h6>
+            <h6>Tópico: {{$topico->nombre}}</h6>
 
             <div class="col col-lg-6">
                 <div class="my-2">
@@ -82,10 +82,10 @@
         const values = {
             chart1: [total_cumplimiento[1] ?? 0, total_cumplimiento[2] ?? 0, total_cumplimiento[3] ?? 0, total_cumplimiento[4] ?? 0],
             chart2: [promedio_riesgo[1] ?? 0, promedio_riesgo[2] ?? 0, promedio_riesgo[3] ?? 0, promedio_riesgo[4] ?? 0],
-            chart3: [cumplimiento_general[1] ?? 0, (total_por_trim[1] ?? 0 - cumplimiento_general[1] ?? 0)],
-            chart4: [cumplimiento_general[2] ?? 0, (total_por_trim[2] ?? 0 - cumplimiento_general[2] ?? 0)],
-            chart5: [cumplimiento_general[3] ?? 0, (total_por_trim[3] ?? 0 - cumplimiento_general[3] ?? 0)],
-            chart6: [cumplimiento_general[4] ?? 0, (total_por_trim[4] ?? 0 - cumplimiento_general[4] ?? 0)],
+            chart3: [cumplimiento_general[1] ?? 0, (total_por_trim[1] ?? 0) - (cumplimiento_general[1] ?? 0)],
+            chart4: [cumplimiento_general[2] ?? 0, (total_por_trim[2] ?? 0) - (cumplimiento_general[2] ?? 0)],
+            chart5: [cumplimiento_general[3] ?? 0, (total_por_trim[3] ?? 0) - (cumplimiento_general[3] ?? 0)],
+            chart6: [cumplimiento_general[4] ?? 0, (total_por_trim[4] ?? 0) - (cumplimiento_general[4] ?? 0)],
         }
 
         const data = {

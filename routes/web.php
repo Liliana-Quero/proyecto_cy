@@ -83,11 +83,7 @@ Route::get('/admin', [AdminController::class, 'index'])
     ->middleware('auth.admin')
     ->name('admin');
 
-Route::get('/cuestionarioadmin', [CuestionarioAdminController::class, 'cuestionario'])
-    ->middleware('auth.admin')
-    ->name('admin.cuestionario');
-
-Route::post('/cuestionarioadmin', [CuestionarioAdminController::class, 'filtrar_registros'])
+Route::get('/cuestionarioadmin', [CuestionarioAdminController::class, 'filtrar_registros'])
     ->middleware('auth.admin')
     ->name('registros.filtrar');
 
@@ -99,7 +95,7 @@ Route::get('/revisar-registros', [CuestionarioAdminController::class, 'revisar_r
     ->middleware('auth.admin')
     ->name('registros.revisar');
 
-Route::post('/comparacion', [RevisionAdminController::class, 'dashboard'])
+Route::get('/comparacion', [RevisionAdminController::class, 'dashboard'])
     ->middleware('auth.admin')
     ->name('dashboard');
 

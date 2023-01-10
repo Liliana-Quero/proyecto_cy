@@ -23,8 +23,7 @@
 
 
 
-        <form id="form-filtros" action="/cuestionarioadmin" method="POST">
-            @csrf
+        <form id="form-filtros" action="/cuestionarioadmin" method="GET">
             <div class="row ">
                 <div class="col-xs-5 col-md-6" style="font-size: 14px; ">
 
@@ -36,7 +35,7 @@
                         Escoge la sucursal:
                     </H3>
 
-                    <select name="select1" onchange="validar(this.form) " id="select1"
+                    <select name="suc" onchange="validar(this.form) " id="select1"
                         class="form-select form-select-lg mb-3" style="width:90%" aria-label=".form-select-lg example"
                         required>
                         <option selected disabled="disabled">Seleccionar Sucursal</option>
@@ -52,7 +51,7 @@
 
                         Escoge el trimestre:
                     </H3>
-                    <select name="select2" onchange="habilitar(this.form)" id="select2"
+                    <select name="trim" onchange="habilitar(this.form)" id="select2"
                         class="form-select form-select-lg mb-3" style="width:90%" aria-label=".form-select-lg example"
                         required>
                         <option selected disabled="disabled">Seleccionar Trimestre</option>
@@ -70,7 +69,7 @@
                         <img src="{!! asset('images/topicos.png') !!}" width="30" height="30" style="opacity:65%">
                         Escoge el tópico:
                     </H3>
-                    <select name="select3" disabled="disabled" onchange="habilitar2(this.form)" id="select3"
+                    <select name="top" disabled="disabled" onchange="habilitar2(this.form)" id="select3"
                         class="form-select form-select-lg mb-3" style="width:140%" aria-label=".form-select-lg example">
                         <option selected disabled="disabled">Seleccionar Tópico</option>
                         @foreach ($topicos as $topico)
@@ -79,7 +78,7 @@
                     </select></p>
 
                     <br>
-                    <button onclick="(function(){location.reload();})" class="btn-lg btn-block btn btn-success"
+                    <button type="reset" class="btn-lg btn-block btn btn-success"
                         style="width:60%; font-size: 16px; align-items: center ; justify-content: rigth;">
                         <img src="{!! asset('images/limpiar.png') !!}" width="30" height="30" style="opacity:65%">
                         LIMPIAR DATOS</button>

@@ -9,9 +9,9 @@
     </div>
     <h2 class="text-center">REVISIÓN: </h2>
     <br>
-    <h6>Sucursal: {{$sucursal}}</h6>
-    <h6>Trimestre: {{$trimestre}}</h6>
-    <h6>Tópico: {{$topico}}</h6>
+    <h6>Sucursal: {{$sucursal->nombre}}</h6>
+    <h6>Trimestre: {{$trimestre->fecha_inicial}} a {{$trimestre->fecha_final}}</h6>
+    <h6>Tópico: {{$topico->nombre}}</h6>
 
     <div class="row" style="padding: left 50px;">
         <div class="col-md-3 col-md-4 col-sm-14 col-xs-4">
@@ -22,19 +22,18 @@
 
         <br>
         <div class="col-md" style="padding-left: 600px;">
-            <form action="{{route('dashboard')}}" method="post">
-                @csrf
-                <input type="hidden" name="sucursal" value="{{$sucursal}}">
-                <input type="hidden" name="trimestre" value="{{$trimestre}}">
-                <input type="hidden" name="topico" value="{{$topico}}">
+            <form action="{{route('dashboard')}}" method="GET">
+                <input type="hidden" name="suc" value="{{$sucursal->id}}">
+                <input type="hidden" name="trim" value="{{$trimestre->id}}">
+                <input type="hidden" name="top" value="{{$topico->id}}">
                 <button type="submit" class="my-2 btn btn-primary">Ver comparación entre los trimestres</button>
             </form>
             <form action="{{route('descargar-pdf')}}" method="post">
                 @csrf
-                <input type="hidden" name="registros" value="{{json_encode($registros)}}">
-                <input type="hidden" name="sucursal" value="{{$sucursal}}">
-                <input type="hidden" name="trimestre" value="{{$trimestre}}">
-                <input type="hidden" name="topico" value="{{$topico}}">
+                <input type="hidden" name="suc" value="{{$sucursal->id}}">
+                <input type="hidden" name="trim" value="{{$trimestre->id}}">
+                <input type="hidden" name="top" value="{{$topico->id}}">
+                <input type="hidden" name="buscar" value="{{$buscar}}">
                 <button type="submit" style="font-size:17px" class="btn btn-primary">
                     Generar listado (PDF)</button>
             </form>
